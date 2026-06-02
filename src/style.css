@@ -1130,10 +1130,8 @@ body {
 .architecture-node.node-dimmed {
   opacity: 0.3;
   filter: grayscale(40%) contrast(90%);
-}
-.architecture-node.node-dimmed:hover {
-  opacity: 0.65;
-  filter: grayscale(15%) contrast(100%);
+  pointer-events: none;
+  cursor: default;
 }
 
 /* Card Files List Styles */

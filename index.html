@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FluxFlow // Git Workflow Visualizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app" class="dashboard-container">
+      <!-- HEADER -->
+      <header class="dashboard-header">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <i data-lucide="git-branch" class="pulse-icon"></i>
+          </div>
+          <div class="logo-text">
+            <h1>FluxFlow</h1>
+            <span class="tagline">Git Workflow Simulator</span>
+          </div>
+        </div>
+
+        <div class="controls-panel">
+          <div class="control-group">
+            <label for="speed-range">Animation Speed (<span id="speed-val">1.2</span>x)</label>
+            <input type="range" id="speed-range" min="0.25" max="3" step="0.25" value="1.2" class="styled-slider">
+          </div>
+
+          <div class="button-group">
+            <button id="btn-reset" class="btn btn-secondary" title="Reset repo state and commits">
+              <i data-lucide="rotate-ccw"></i>
+              <span>Reset Repo</span>
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="toggle-group">
+            <button id="btn-sandbox-toggle" class="btn btn-toggle" title="Switch to manual sandbox mode">
+              <i data-lucide="swatch-book"></i>
+              <span>Sandbox Mode</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- MAIN CONTENT AREA -->
+      <main class="dashboard-body">
+        <!-- CANVAS WORKSPACE -->
+        <div class="canvas-workspace" id="canvas-workspace">
+          <!-- SVG Connections Overlay -->
+          <svg class="connections-svg" id="connections-svg">
+            <defs>
+              <linearGradient id="grad-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FF7F30" />
+                <stop offset="100%" stop-color="#FF9454" />
+              </linearGradient>
+              <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00CC96" />
+                <stop offset="100%" stop-color="#33E0B5" />
+              </linearGradient>
+              <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0090FF" />
+                <stop offset="100%" stop-color="#33A6FF" />
+              </linearGradient>
+              <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#9B5BDB" />
+                <stop offset="100%" stop-color="#B27BE3" />
+              </linearGradient>
+              <filter id="glow-orange" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+          </svg>
+
+
+          <!-- Sandbox Instruction Alert -->
+          <div class="sandbox-banner" id="sandbox-banner">
+            <i data-lucide="info"></i>
+            <span><strong>Sandbox Mode Active:</strong> Click a git node, then click a connected target to transfer changes manually. Node buttons are disabled.</span>
+          </div>
+
+          <!-- GIT NODES -->
+          <!-- Node: Working Directory -->
+          <div class="architecture-node node-git-work" id="node-work" data-node="work">
+            <div class="node-main-content">
+              <div class="node-details">
+                <span class="node-type">Working Directory</span>
+                <h3 class="node-name">Local Project Files</h3>
+                <div class="git-badge badge-unstaged" id="badge-unstaged">0 files modified</div>
+              </div>
+            </div>
+
+            <div class="node-files-list" id="files-list-work"></div>
+
+            <button class="node-action-btn btn-cyan-glow" id="btn-git-add">
+              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git add .</span></span>
+              <span class="cmd-play"><i data-lucide="play"></i></span>
+            </button>
+            
+            <div class="node-status">
+              <span class="status-indicator status-idle"></span>
+              <span class="status-text">Clean</span>
+            </div>
+            <!-- Node Tooltip -->
+            <div class="node-tooltip">
+              <h4 class="tooltip-title">Working Directory</h4>
+              <p class="tooltip-desc">Your active project folder. Files you're editing right now, not yet saved to history.</p>
+            </div>
+          </div>
+
+          <!-- Node: Staging Area -->
+          <div class="architecture-node node-git-stage" id="node-stage" data-node="stage">
+            <div class="node-main-content">
+              <div class="node-details">
+                <span class="node-type">Staging Area</span>
+                <h3 class="node-name">Changes Prepared</h3>
+                <div class="git-badge badge-staged" id="badge-staged">0 files staged</div>
+              </div>
+            </div>
+
+            <div class="node-files-list" id="files-list-stage"></div>
+
+            <button class="node-action-btn btn-green-glow" id="btn-git-commit" disabled>
+              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git commit</span></span>
+              <span class="cmd-play"><i data-lucide="play"></i></span>
+            </button>
+            
+            <div class="node-status">
+              <span class="status-indicator status-idle"></span>
+              <span class="status-text">Empty</span>
+            </div>
+            <!-- Node Tooltip -->
+            <div class="node-tooltip">
+              <h4 class="tooltip-title">Staging Area</h4>
+              <p class="tooltip-desc">A checklist of changes you've marked to include in the next commit snapshot.</p>
+            </div>
+          </div>
+
+          <!-- Node: Local Repo (Main) -->
+          <div class="architecture-node node-git-local-main" id="node-local-main" data-node="local-main">
+            <div class="node-main-content">
+              <div class="node-details">
+                <span class="node-type">Local Repository (main)</span>
+                <h3 class="node-name">Saved History</h3>
+                <div class="git-badge badge-commits-main" id="badge-commits-main">0 commits</div>
+              </div>
+            </div>
+
+            <div class="node-button-group">
+              <button class="node-action-btn btn-orange-glow" id="btn-git-push" disabled>
+                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git push origin</span></span>
+                <span class="cmd-play"><i data-lucide="play"></i></span>
+              </button>
+              <button class="node-action-btn btn-purple-glow" id="btn-git-branch">
+                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git checkout -b</span></span>
+                <span class="cmd-play"><i data-lucide="play"></i></span>
+              </button>
+              <button class="node-action-btn btn-purple-glow" id="btn-git-merge" style="display:none;">
+                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git merge feature</span></span>
+                <span class="cmd-play"><i data-lucide="play"></i></span>
+              </button>
+            </div>
+            
+            <div class="node-status">
+              <span class="status-indicator status-idle"></span>
+              <span class="status-text">HEAD pointing to main</span>
+            </div>
+            <!-- Node Tooltip -->
+            <div class="node-tooltip">
+              <h4 class="tooltip-title">Local Repository</h4>
+              <p class="tooltip-desc">Your machine's permanent commit history. A timeline you can always roll back to.</p>
+            </div>
+          </div>
+
+          <!-- Node: Local Repo (Feature) -->
+          <div class="architecture-node node-git-local-feature branch-hidden" id="node-local-feature" data-node="local-feature">
+            <div class="node-main-content">
+              <div class="node-details">
+                <span class="node-type">Local Repository (feature)</span>
+                <h3 class="node-name" id="feature-branch-title">Draft Timeline</h3>
+                <div class="git-badge badge-commits-feature" id="badge-commits-feature">0 commits</div>
+              </div>
+            </div>
+
+            <button class="node-action-btn btn-orange-glow" id="btn-git-checkout-main">
+              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git checkout main</span></span>
+              <span class="cmd-play"><i data-lucide="play"></i></span>
+            </button>
+            
+            <div class="node-status">
+              <span class="status-indicator status-idle"></span>
+              <span class="status-text">Inactive</span>
+            </div>
+            <!-- Node Tooltip -->
+            <div class="node-tooltip">
+              <h4 class="tooltip-title">Feature Branch</h4>
+              <p class="tooltip-desc">An isolated branch for building features without touching the main timeline.</p>
+            </div>
+          </div>
+
+          <!-- Node: Remote Repo -->
+          <div class="architecture-node node-git-remote" id="node-remote" data-node="remote">
+            <div class="node-main-content">
+              <div class="node-details">
+                <span class="node-type">Remote Repository (origin)</span>
+                <h3 class="node-name">Cloud Storage</h3>
+                <div class="git-badge badge-commits-remote" id="badge-commits-remote">0 commits</div>
+              </div>
+            </div>
+
+            <button class="node-action-btn btn-yellow-glow" id="btn-git-pull">
+              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git pull origin</span></span>
+              <span class="cmd-play"><i data-lucide="play"></i></span>
+            </button>
+            
+            <div class="node-status">
+              <span class="status-indicator status-idle"></span>
+              <span class="status-text">origin/main</span>
+            </div>
+            <!-- Node Tooltip -->
+            <div class="node-tooltip">
+              <h4 class="tooltip-title">Remote Repository</h4>
+              <p class="tooltip-desc">The cloud backup (GitHub). Keeps your history safe and synced with your team.</p>
+            </div>
+          </div>
+
+          <!-- SVG Particles Overlay (Moving Packets) -->
+          <div class="packets-container" id="packets-container"></div>
+        </div>
+
+        <!-- RIGHT METRICS & DETAILS SIDEBAR -->
+        <aside class="dashboard-sidebar">
+          <!-- Git Telemetry Card -->
+          <div class="sidebar-card metrics-card">
+            <h2 class="card-title">
+              <i data-lucide="terminal"></i> Repository State
+            </h2>
+            <div class="metrics-grid">
+              <div class="metric-item">
+                <span class="metric-label">Active Branch</span>
+                <span class="metric-value" id="metric-active-branch">main</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Local commits</span>
+                <span class="metric-value" id="metric-local-commits">0</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Staged Files</span>
+                <span class="metric-value" id="metric-staged-count">0</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Sync Status</span>
+                <span class="metric-value" id="metric-sync-status">Synced</span>
+              </div>
+            </div>
+            <div class="system-health-bar">
+              <div class="health-label">
+                <span>Working Directory Cleanliness</span>
+                <span id="health-value">100%</span>
+              </div>
+              <div class="health-track">
+                <div class="health-fill" id="health-fill" style="width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Git Concept Decoder Card -->
+          <div class="sidebar-card scenario-card">
+            <h2 class="card-title">
+              <i data-lucide="info"></i> Terminology Decoder
+            </h2>
+            <div class="scenario-details-content">
+              <h3>Git Concepts Translated</h3>
+              <p>Hover over cards to see tooltips, or click buttons to run actions. Here is what they actually do:</p>
+              <div class="flow-steps">
+                <ol>
+                  <li><strong>git add</strong> // <code>Prepare edits</code><br>Moves local edits from your <em>Project Files</em> into the <em>Prepared checklist</em>.</li>
+                  <li><strong>git commit</strong> // <code>Save snapshot</code><br>Saves the prepared checklist as a permanent snapshot in your <em>Local History</em>.</li>
+                  <li><strong>git push</strong> // <code>Upload to cloud</code><br>Copies local snapshots to <em>Cloud Storage (GitHub)</em>.</li>
+                  <li><strong>git pull</strong> // <code>Download from cloud</code><br>Downloads the latest cloud snapshots to your machine.</li>
+                  <li><strong>git branch</strong> // <code>Create draft workspace</code><br>Splits off an isolated timeline to test draft features safely.</li>
+                  <li><strong>git merge</strong> // <code>Combine drafts</code><br>Merges your draft workspace timeline back into main.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </main>
+
+      <!-- BOTTOM LOG TERMINAL -->
+      <footer class="dashboard-footer">
+        <div class="terminal-header">
+          <div class="terminal-tabs">
+            <button class="tab-btn active">
+              <i data-lucide="terminal"></i> Git Shell Log
+            </button>
+          </div>
+          <div class="terminal-actions">
+            <button id="btn-clear-logs" class="btn btn-icon-only" title="Clear log entries">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </div>
+        </div>
+        <div class="terminal-console" id="terminal-console">
+          <div class="log-entry log-system">
+            <span class="log-time">[14:28:22]</span>
+            <span class="log-tag tag-system">SYSTEM</span>
+            <span class="log-message">Initialized empty Git repository in /Users/mustafa/project/.git/</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Modals or interactive details container if needed -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -12,10 +12,16 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <script type="module" crossorigin src="/nextwork-visualization/assets/index-BVFM_XBh.js"></script>
-    <link rel="stylesheet" crossorigin href="/nextwork-visualization/assets/index-CcHwBeR1.css">
+    <script type="module" crossorigin src="/nextwork-visualization/assets/main-C9WfaJyq.js"></script>
+    <link rel="modulepreload" crossorigin href="/nextwork-visualization/assets/modulepreload-polyfill-Dezn_h7o.js">
+    <link rel="stylesheet" crossorigin href="/nextwork-visualization/assets/main-tViQUcoL.css">
   </head>
   <body>
+    <nav class="page-switch">
+      <a href="/nextwork-visualization/" class="active">Nodes</a>
+<a href="/nextwork-visualization/truck.html">Delivery</a>
+      <a href="/nextwork-visualization/scratch.html">Scratch</a>
+    </nav>
     <div id="app" class="dashboard-container">
       <!-- HEADER -->
       <header class="dashboard-header">
@@ -107,8 +113,8 @@
             <div class="node-files-list" id="files-list-work"></div>
 
             <button class="node-action-btn btn-cyan-glow" id="btn-git-add">
-              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git add .</span></span>
-              <span class="cmd-play"><i data-lucide="play"></i></span>
+              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git add</span></span>
+              <span class="cmd-play"><svg class="play-tri" viewBox="0 0 8 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L8 5L0 10Z"/></svg></span>
             </button>
             
             <div class="node-status">
@@ -136,7 +142,7 @@
 
             <button class="node-action-btn btn-green-glow" id="btn-git-commit" disabled>
               <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git commit</span></span>
-              <span class="cmd-play"><i data-lucide="play"></i></span>
+              <span class="cmd-play"><svg class="play-tri" viewBox="0 0 8 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L8 5L0 10Z"/></svg></span>
             </button>
             
             <div class="node-status">
@@ -162,16 +168,16 @@
 
             <div class="node-button-group">
               <button class="node-action-btn btn-orange-glow" id="btn-git-push" disabled>
-                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git push origin</span></span>
-                <span class="cmd-play"><i data-lucide="play"></i></span>
+                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git push</span></span>
+                <span class="cmd-play"><svg class="play-tri" viewBox="0 0 8 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L8 5L0 10Z"/></svg></span>
               </button>
               <button class="node-action-btn btn-purple-glow" id="btn-git-branch">
-                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git checkout -b</span></span>
-                <span class="cmd-play"><i data-lucide="play"></i></span>
+                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git checkout</span></span>
+                <span class="cmd-play"><svg class="play-tri" viewBox="0 0 8 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L8 5L0 10Z"/></svg></span>
               </button>
-              <button class="node-action-btn btn-purple-glow" id="btn-git-merge" style="display:none;">
-                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git merge feature</span></span>
-                <span class="cmd-play"><i data-lucide="play"></i></span>
+              <button class="node-action-btn btn-purple-glow" id="btn-git-merge" disabled>
+                <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git merge</span></span>
+                <span class="cmd-play"><svg class="play-tri" viewBox="0 0 8 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L8 5L0 10Z"/></svg></span>
               </button>
             </div>
             
@@ -197,8 +203,8 @@
             </div>
 
             <button class="node-action-btn btn-orange-glow" id="btn-git-checkout-main">
-              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git checkout main</span></span>
-              <span class="cmd-play"><i data-lucide="play"></i></span>
+              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git checkout</span></span>
+              <span class="cmd-play"><svg class="play-tri" viewBox="0 0 8 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L8 5L0 10Z"/></svg></span>
             </button>
             
             <div class="node-status">
@@ -223,8 +229,8 @@
             </div>
 
             <button class="node-action-btn btn-yellow-glow" id="btn-git-pull">
-              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git pull origin</span></span>
-              <span class="cmd-play"><i data-lucide="play"></i></span>
+              <span class="cmd-left"><span class="cmd-prompt">$</span><span class="cmd-text">git pull</span></span>
+              <span class="cmd-play"><svg class="play-tri" viewBox="0 0 8 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 0L8 5L0 10Z"/></svg></span>
             </button>
             
             <div class="node-status">

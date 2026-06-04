@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/nextwork-visualization/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nextwork — The Delivery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module" crossorigin src="/nextwork-visualization/assets/truck-kFCDKBt4.js"></script>
+    <link rel="modulepreload" crossorigin href="/nextwork-visualization/assets/modulepreload-polyfill-Dezn_h7o.js">
+    <link rel="stylesheet" crossorigin href="/nextwork-visualization/assets/truck-DsRFux4A.css">
+  </head>
+  <body>
+    <nav class="page-switch">
+      <a href="/nextwork-visualization/">Nodes</a>
+      <a href="/nextwork-visualization/truck.html" class="active">Delivery</a>
+      <a href="/nextwork-visualization/scratch.html">Scratch</a>
+    </nav>
+    <main class="ship-stage">
+      <!-- THE TIMELINE -->
+      <div class="timeline" id="timeline">
+        <div class="zone computer"><span class="zone-name"><i data-lucide="monitor"></i> Your computer</span></div>
+        <div class="zone cloudzone"><span class="zone-name"><i data-lucide="cloud"></i> Cloud</span></div>
+
+        <div class="tl-line"></div>
+        <div class="tl-branch" id="tl-branch"></div>
+
+        <div class="stop" id="stop-unsaved" style="left:8%;">
+          <div class="stop-icon"><i data-lucide="file-pen"></i></div>
+          <div class="stop-label">Unsaved<small>working dir</small></div>
+        </div>
+        <div class="stop" id="stop-tracked" style="left:25%;">
+          <div class="stop-icon"><i data-lucide="file-check"></i></div>
+          <div class="stop-label">Tracked<small>git add</small></div>
+        </div>
+        <div class="stop" id="stop-saved" style="left:44%;">
+          <div class="stop-icon"><i data-lucide="save"></i><span class="stop-count" id="count-saved"></span></div>
+          <div class="stop-label">Saved<small>git commit</small></div>
+        </div>
+        <div class="stop" id="stop-cloud" style="left:87%;">
+          <div class="stop-icon"><i data-lucide="cloud"></i><span class="stop-count" id="count-cloud"></span></div>
+          <div class="stop-label">Cloud<small>git push</small></div>
+        </div>
+
+        <!-- branch stop drops below "Saved" -->
+        <div class="stop side" id="stop-side" style="left:44%;">
+          <div class="stop-icon"><i data-lucide="git-branch"></i><span class="stop-count" id="count-side"></span></div>
+          <div class="stop-label">Branch<small>checkout -b</small></div>
+        </div>
+
+        <div class="mover-layer" id="mover-layer"></div>
+      </div>
+
+      <div class="caption" id="caption">Click a command below to see what it does on the timeline.</div>
+
+      <!-- COMMAND PALETTE -->
+      <div class="cmd-palette">
+        <div class="cmd-group">
+          <span class="cmd-group-label"><i data-lucide="hard-drive"></i> Local</span>
+          <div class="cmd-row">
+            <button class="cmd cmd-cyan" id="cmd-add" data-cmd="add">
+              <span class="cmd-prompt">$</span><span class="cmd-text">git add .</span>
+            </button>
+            <button class="cmd cmd-green" id="cmd-commit" data-cmd="commit">
+              <span class="cmd-prompt">$</span><span class="cmd-text">git commit</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="cmd-group">
+          <span class="cmd-group-label"><i data-lucide="git-branch"></i> Branching</span>
+          <div class="cmd-row">
+            <button class="cmd cmd-purple" id="cmd-branch" data-cmd="branch">
+              <span class="cmd-prompt">$</span><span class="cmd-text">git checkout -b feature/ui</span>
+            </button>
+            <button class="cmd cmd-orange" id="cmd-checkout" data-cmd="checkout">
+              <span class="cmd-prompt">$</span><span class="cmd-text">git checkout main</span>
+            </button>
+            <button class="cmd cmd-purple" id="cmd-merge" data-cmd="merge">
+              <span class="cmd-prompt">$</span><span class="cmd-text">git merge feature/ui</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="cmd-group">
+          <span class="cmd-group-label"><i data-lucide="cloud"></i> Remote</span>
+          <div class="cmd-row">
+            <button class="cmd cmd-yellow" id="cmd-push" data-cmd="push">
+              <span class="cmd-prompt">$</span><span class="cmd-text">git push origin main</span>
+            </button>
+            <button class="cmd cmd-yellow" id="cmd-pull" data-cmd="pull">
+              <span class="cmd-prompt">$</span><span class="cmd-text">git pull origin main</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="cmd-reset" title="Start over">
+        <i data-lucide="rotate-ccw"></i><span>Start over</span>
+      </button>
+    </main>
+  </body>
+</html>

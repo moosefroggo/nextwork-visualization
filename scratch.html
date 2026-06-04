@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/nextwork-visualization/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Git Scratch — FluxFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/nextwork-visualization/assets/scratch-Bp9By4jw.js"></script>
+  <link rel="modulepreload" crossorigin href="/nextwork-visualization/assets/modulepreload-polyfill-Dezn_h7o.js">
+  <link rel="stylesheet" crossorigin href="/nextwork-visualization/assets/scratch-C5AcFU0d.css">
+</head>
+<body>
+  <nav class="page-switch">
+    <a href="/nextwork-visualization/">Nodes</a>
+<a href="/nextwork-visualization/truck.html">Delivery</a>
+    <a href="/nextwork-visualization/scratch.html" class="active">Scratch</a>
+  </nav>
+
+  <div class="root">
+
+    <!-- Palette -->
+    <aside class="palette" id="palette">
+      <div class="pal-block" data-cmd="git-status"      style="--bc:#2E5A88">Start editing</div>
+      <div class="pal-block" data-cmd="git-add"         style="--bc:#1B6B4A">Pick up changes</div>
+      <div class="pal-block" data-cmd="git-commit"      style="--bc:#1B6B4A">Save to track</div>
+      <div class="pal-block" data-cmd="git-branch-new"  style="--bc:#5C2D91">Start side track</div>
+      <div class="pal-block" data-cmd="git-checkout"    style="--bc:#5C2D91">Switch track</div>
+      <div class="pal-block" data-cmd="git-merge"       style="--bc:#5C2D91">Combine tracks</div>
+      <div class="pal-block" data-cmd="git-push"        style="--bc:#8C3F00">Send to cloud</div>
+      <div class="pal-block" data-cmd="git-pull"        style="--bc:#8C3F00">Bring from cloud</div>
+    </aside>
+
+    <!-- Program -->
+    <div class="program" id="program">
+      <!-- Hat block -->
+      <div class="hat-block">
+        <span class="hat-flag">▶</span> When Run clicked
+      </div>
+
+      <!-- Droppable list -->
+      <div class="prog-list" id="prog-list">
+        <div class="prog-empty" id="prog-empty">drag commands here</div>
+      </div>
+
+      <!-- Controls -->
+      <div class="prog-controls">
+        <button class="run-btn" id="run-btn">▶ Run</button>
+        <button class="clear-btn" id="clear-btn">↺</button>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-wrap">
+      <div class="branch-labels" id="branch-labels"></div>
+      <div class="svg-scroll" id="svg-scroll">
+        <svg id="timeline-svg" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Drag ghost (appended to body by JS) -->
+</body>
+</html>

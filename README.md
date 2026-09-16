@@ -1,34 +1,32 @@
 # Git Workflow Visualizer
 
-An interactive simulator that makes Git's invisible state transitions visible—from working files to staging, local history, branches, and GitHub.
+This simulator shows what happens when you stage files, commit, branch, merge, push, and pull in Git.
 
-**[Open the live visualizer →](https://moosefroggo.github.io/nextwork-visualization/)**
+[Try the visualizer](https://moosefroggo.github.io/nextwork-visualization/)
 
-## What you can explore
+## What you can do
 
 - Run simulated `git add`, `commit`, `push`, `pull`, `checkout`, and `merge` actions
-- Watch animated packets travel between working files, staging, local branches, and the remote repository
-- See branch, commit, file, and sync state update after every action
-- Read a plain-language translation alongside each Git command
-- Create an isolated feature branch and merge it back into `main`
-- Switch to sandbox mode and move changes manually through valid paths
-- Adjust animation speed, inspect the activity log, or reset the repository state
+- See changes move between working files, staging, local branches, and the remote
+- Watch the branch, commit, and sync state update after each action
+- Read a plain-language explanation of each command
+- Create and merge a feature branch
+- Use sandbox mode to move changes yourself
+- Change the animation speed, view the activity log, or reset the simulation
 
 ## Why I built it
 
-Git is difficult to learn because its most important objects and transitions are invisible. This prototype turns the mental model into a manipulable system, connecting each command to both its destination and its effect on repository state.
+Git can be hard to learn because you cannot see where your changes go. This project shows the effect of each command on a small example repository.
 
-## Implementation
+## How it works
 
-The visualizer uses a small in-browser state machine. SVG paths connect each repository layer, while JavaScript calculates node geometry and animates packets along those paths. The UI derives action availability, metrics, and explanatory logs from the current simulated state.
+An in-browser state machine tracks the example repository. JavaScript updates the diagram and animates changes along SVG paths. The available actions and activity log change with the repository state.
 
-This is an educational simulation: it does not execute Git commands or modify a real repository.
+This is a teaching tool. It does not run Git commands or change a real repository.
 
 ## Stack
 
-- Vanilla JavaScript
-- CSS animations and responsive SVG
-- Vite
+Vanilla JavaScript, CSS, SVG, and Vite.
 
 ## Run locally
 
@@ -37,7 +35,7 @@ npm install
 npm run dev
 ```
 
-Create a production build with:
+To build it:
 
 ```bash
 npm run build
